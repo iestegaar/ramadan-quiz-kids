@@ -4,206 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ramadan Quiz - Het Rechte Pad College</title>
-    <style>
-        body {
-            /* Huisstijl: Donkerblauw naar Goud verloop */
-            background: linear-gradient(-45deg, #001f3f, #003366, #d4af37, #001f3f);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .quiz-container {
-            background: rgba(0, 31, 63, 0.85);
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-            text-align: center;
-            width: 90%;
-            max-width: 500px;
-            border: 3px solid #d4af37;
-            position: relative;
-        }
-
-        h1 {
-            color: #ffffff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: float 3s ease-in-out infinite;
-            margin-top: 0;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .btn {
-            background: #d4af37;
-            color: #001f3f;
-            border: none;
-            padding: 12px 20px;
-            margin: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            width: 80%;
-        }
-
-        .btn:hover:not([disabled]) {
-            transform: scale(1.05);
-            background: #ffffff;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
-
-        /* Feedback Kleuren */
-        .wrong {
-            background-color: #e74c3c !important;
-            color: white !important;
-            animation: shake 0.4s;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        .correct {
-            background-color: #2ecc71 !important;
-            color: white !important;
-            transform: scale(1.1);
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        #score-display {
-            font-size: 1.2rem;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #d4af37;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<div class="logo-container">
+    <img src="images/HRPC-logo.png" alt="Logo Het Rechte Pad College">
+</div>
+
 <div class="quiz-container">
+    <div class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
     <h1>Ramadan Quiz 🌙</h1>
-    <div id="question-container">
-        <h2 id="question-text">Vraag wordt geladen...</h2>
+    <div id="quiz-box">
+        <h2 id="question-text">Laden...</h2>
         <div id="answer-buttons"></div>
     </div>
     <div id="score-display">Score: 0</div>
 </div>
 
-<script>
-    const questions = [
-        { 
-            q: "Wat is de naam van de poort in het Paradijs speciaal voor vastenden?", 
-            a: [{t: "Ar-Rayyaan", c: true}, {t: "Al-Firdaws", c: false}, {t: "As-Salaam", c: false}] 
-        },
-        { 
-            q: "Hoeveel dagen telt de maand Ramadan meestal?", 
-            a: [{t: "30 of 31", c: false}, {t: "29 of 30", c: true}, {t: "28", c: false}] 
-        },
-        { 
-            q: "Wat verbreekt het vasten direct?", 
-            a: [{t: "Tanden poetsen", c: false}, {t: "Opzettelijk eten of drinken", c: true}, {t: "Douchen", c: false}] 
-        },
-        { 
-            q: "Wat moet je in je hart hebben voordat je begint met vasten?", 
-            a: [{t: "Een volle maag", c: false}, {t: "De intentie (Niyyah)", c: true}, {t: "Nieuwe kleren", c: false}] 
-        }
-    ];
+<audio id="correct-sound" src="sounds/correct.mp3" preload="auto"></audio>
 
-    let currentIdx = 0;
-    let score = 0;
-    let pointsAwardedForThisQuestion = true;
-
-    const qText = document.getElementById('question-text');
-    const btnContainer = document.getElementById('answer-buttons');
-    const scoreText = document.getElementById('score-display');
-
-    function startQuiz() {
-        currentIdx = 0;
-        score = 0;
-        showQuestion();
-    }
-
-    function showQuestion() {
-        resetState();
-        pointsAwardedForThisQuestion = true; // Je krijgt alleen een punt als je het de 1e keer goed hebt
-        let question = questions[currentIdx];
-        qText.innerText = question.q;
-
-        question.a.forEach(answer => {
-            const button = document.createElement('button');
-            button.innerText = answer.t;
-            button.classList.add('btn');
-            button.addEventListener('click', () => selectAnswer(button, answer.c));
-            btnContainer.appendChild(button);
-        });
-    }
-
-    function resetState() {
-        while (btnContainer.firstChild) {
-            btnContainer.removeChild(btnContainer.firstChild);
-        }
-    }
-
-    function selectAnswer(selectedBtn, isCorrect) {
-        if (isCorrect) {
-            selectedBtn.classList.add('correct');
-            // Alleen score verhogen als ze nog geen fout hebben gemaakt bij deze vraag
-            if (pointsAwardedForThisQuestion) {
-                score++;
-                scoreText.innerText = `Score: ${score}`;
-            }
-
-            // Wacht even zodat ze de groene kleur zien, dan naar de volgende vraag
-            setTimeout(() => {
-                currentIdx++;
-                if (currentIdx < questions.length) {
-                    showQuestion();
-                } else {
-                    showResult();
-                }
-            }, 1000);
-        } else {
-            selectedBtn.classList.add('wrong');
-            selectedBtn.disabled = true; // Je kunt deze foute knop niet meer klikken
-            pointsAwardedForThisQuestion = false; // Geen punten voor deze vraag omdat er een fout is gemaakt
-        }
-    }
-
-    function showResult() {
-        resetState();
-        qText.innerText = `Masha'Allah! Je hebt de quiz afgerond.`;
-        scoreText.innerText = `Eindscore: ${score} van de ${questions.length}`;
-        
-        const restartBtn = document.createElement('button');
-        restartBtn.innerText = "Opnieuw Spelen";
-        restartBtn.classList.add('btn');
-        restartBtn.onclick = () => location.reload();
-        btnContainer.appendChild(restartBtn);
-    }
-
-    startQuiz();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
