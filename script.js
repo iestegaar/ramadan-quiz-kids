@@ -48,14 +48,16 @@ const questions = [
         answers: [{text: "Vergeten dat je vast en per ongeluk drinken", correct: true}, {text: "Expres een snoepje eten", correct: false}, {text: "Een slok water nemen tijdens woedoe", correct: false}] 
     },
     { 
-        question: "Waarom vasten moslims tijdens de Ramadan?", 
-        answers: [{text: "Om te voelen hoe het is voor arme mensen en Taqwa te krijgen", correct: true}, {text: "Omdat we overdag niet mogen koken", correct: false}, {text: "Alleen om fit te blijven", correct: false}] 
-    },
-    { 
         question: "Welk gebed wordt er specifiek in de avonden van de Ramadan gebeden?", 
         answers: [{text: "Het Witr gebed", correct: false}, {text: "Het Tarawih gebed", correct: true}, {text: "Het Eid gebed", correct: false}] 
-    }
-];
+    },
+    { 
+        question: "Wat is de naam van de poort in het Paradijs speciaal voor vastenden?", 
+        answers: [{text: "Ar-Rayyaan", correct: true}, {text: "Al-Firdaws", correct: false}, {text: "As-Salaam", correct: false}] 
+    },
+        { question: "Hoe noemen we de maaltijd vlak vóór het begin van de vastendag?", answers: [{text: "Iftar", correct: false}, {text: "Suhoor", correct: true}, {text: "Maghrib", correct: false}] },
+        // Voeg hier meer vragen toe...
+    ];
 
 let currentQuestionIndex = 0;
 let score = 0;
