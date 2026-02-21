@@ -59,78 +59,87 @@ const questions = [
         // Voeg hier meer vragen toe...
     ];
 
-let currentQuestionIndex = 0;
+let currentIdx = 0;
 let score = 0;
+let firstTry = true;
 
-const questionElement = document.getElementById("question");
-const choiceButtons = document.getElementById("choices");
-const scoreElement = document.getElementById("score");
-const progressBar = document.getElementById("progress-bar");
+// Wacht tot de HTML elementen geladen zijn
+document.addEventListener('DOMContentLoaded', () => {
+    const qText = document.getElementById('question-text');
+    const btnContainer = document.getElementById('answer-buttons');
+    const scoreText = document.getElementById('score-display');
+    const progressBar = document.getElementById('progress-bar');
+    const correctSound = document.getElementById('correct-sound');
 
-function startQuiz() {
-    currentQuestionIndex = 0;
-    score = 0;
-    showQuestion();
-}
+    function showQuestion() {
+        resetState();
+        firstTry = true;
+        let q = questions[currentIdx];
+        
+        // Hier veranderen we de "Laden..." tekst naar de vraag
+        qText.innerText = q.q;
+        
+        // Update voortgangsbalk
+        progressBar.style.width = (currentIdx / questions.length) * 100 + "%";
 
-function showQuestion() {
-    resetState();
-    let currentQuestion = questions[currentQuestionIndex];
-    questionElement.innerText = currentQuestion.question;
-    
-    // Update voortgangsbalk
-    const progress = ((currentQuestionIndex) / questions.length) * 100;
-    progressBar.style.width = progress + "%";
-
-    currentQuestion.answers.forEach(answer => {
-        const button = document.createElement("button");
-        button.innerText = answer.text;
-        button.classList.add("btn");
-        if (answer.correct) { button.dataset.correct = answer.correct; }
-        button.addEventListener("click", selectAnswer);
-        choiceButtons.appendChild(button);
-    });
-}
-
-function resetState() {
-    while (choiceButtons.firstChild) {
-        choiceButtons.removeChild(choiceButtons.firstChild);
-    }
-}
-
-function selectAnswer(e) {
-    const selectedBtn = e.target;
-    const isCorrect = selectedBtn.dataset.correct === "true";
-    
-    if (isCorrect) {
-        selectedBtn.style.backgroundColor = "#2ecc71";
-        score++;
-    } else {
-        selectedBtn.style.backgroundColor = "#e74c3c";
-        selectedBtn.classList.add("shake"); // Voegt een fout-animatie toe
+        q.a.forEach(answer => {
+            const button = document.createElement('button');
+            button.innerText = answer.t;
+            button.classList.add('btn');
+            button.onclick = () => selectAnswer(button, answer.c);
+            btnContainer.appendChild(button);
+        });
     }
 
-    scoreElement.innerText = `Score: ${score}`;
-    
-    // Wacht 1 seconde en ga naar de volgende vraag
-    setTimeout(() => {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < questions.length) {
-            showQuestion();
-        } else {
-            showScore();
+    function resetState() {
+        while (btnContainer.firstChild) {
+            btnContainer.removeChild(btnContainer.firstChild);
         }
-    }, 1000);
-}
+    }
 
-function showScore() {
-    resetState();
-    progressBar.style.width = "100%";
-    questionElement.innerText = `Klaar! Je hebt ${score} van de ${questions.length} punten gehaald. Moge Allah je kennis vermeerderen!`;
-    const restartBtn = document.createElement("button");
-    restartBtn.innerText = "Opnieuw Spelen";
-    restartBtn.onclick = () => location.reload();
-    choiceButtons.appendChild(restartBtn);
-}
+    function selectAnswer(btn, isCorrect) {
+        if (isCorrect) {
+            btn.classList.add('correct');
+            
+            // Probeer geluid af te spelen (als het bestand bestaat)
+            if (correctSound) {
+                correctSound.currentTime = 0;
+                correctSound.play().catch(e => console.log("Geluid kon niet spelen"));
+            }
 
-startQuiz();
+            if (firstTry) {
+                score++;
+                scoreText.innerText = `Score: ${score}`;
+            }
+
+            setTimeout(() => {
+                currentIdx++;
+                if (currentIdx < questions.length) {
+                    showQuestion();
+                } else {
+                    showResult();
+                }
+            }, 1000);
+        } else {
+            btn.classList.add('wrong');
+            btn.disabled = true;
+            firstTry = false;
+        }
+    }
+
+    function showResult() {
+        resetState();
+        progressBar.style.width = "100%";
+        qText.innerText = "Masha'Allah! Je bent klaar.";
+        scoreText.innerText = `Eindscore: ${score} van de ${questions.length}`;
+        
+        const rb = document.createElement('button');
+        rb.innerText = "Opnieuw Spelen";
+        rb.classList.add('btn');
+        rb.onclick = () => location.reload();
+        btnContainer.appendChild(rb);
+    }
+
+    // Start de quiz voor de eerste keer
+    showQuestion();
+});
