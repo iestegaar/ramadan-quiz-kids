@@ -1,30 +1,47 @@
 body {
-    /* Donkerblauw verloop met een gouden gloed die langzaam beweegt */
+    display: flex;
+    flex-direction: column; /* Dit zet het logo BOVEN de quiz */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
     background: linear-gradient(-45deg, #001f3f, #003366, #d4af37, #001f3f);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.logo-container {
+    width: 90%;
+    max-width: 500px; /* Dit zorgt dat het logo niet breder wordt dan de quiz */
+    margin-top: 20px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
 }
 
-@keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.logo-container img {
+    width: 100%;      /* Vult de breedte van de container (500px) */
+    max-height: 150px; /* BEPERKING: Dit voorkomt dat het logo te hoog wordt */
+    object-fit: contain; /* Zorgt dat het logo niet vervormt */
+    display: block;
+}
+
+/* Zorg ook dat de body de quiz niet verbergt */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Verander center naar flex-start */
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 20px; /* Geeft wat ademruimte aan de bovenkant */
+    overflow-y: auto;  /* Zorgt dat je kunt scrollen als het scherm klein is */
 }
 
 .quiz-container {
-    /* Achtergrond is nu donkerblauw (transparant) in plaats van zwart */
-    background: rgba(0, 31, 63, 0.85);
+    background: rgba(0, 31, 63, 0.9);
     padding: 2rem;
     border-radius: 20px;
-    /* De schaduw en rand zijn nu goudkleurig */
     box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
     text-align: center;
     width: 90%;
@@ -32,34 +49,46 @@ body {
     border: 3px solid #d4af37;
 }
 
-button {
-    /* Knoppen zijn goudkleurig met donkerblauwe tekst voor leesbaarheid */
+.progress-container {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    height: 12px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #d4af37;
+    transition: width 0.5s ease;
+}
+
+.btn {
     background: #d4af37;
     color: #001f3f;
     border: none;
     padding: 12px 20px;
-    margin: 10px;
+    margin: 8px 0;
     border-radius: 10px;
     cursor: pointer;
     font-size: 1.1rem;
     font-weight: bold;
-    transition: all 0.3s ease;
+    width: 100%;
 }
 
-button:hover {
-    transform: scale(1.05);
-    background: #ffffff; /* Kleurt wit bij hover voor een interactief effect */
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+.btn:hover:not([disabled]) {
+    background: #ffffff;
 }
 
-/* De zwevende titel */
-h1 {
-    color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    animation: float 3s ease-in-out infinite;
+.wrong { background-color: #e74c3c !important; color: white !important; animation: shake 0.4s; }
+.correct { background-color: #2ecc71 !important; color: white !important; }
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
+#score-display { margin-top: 20px; font-weight: bold; color: #d4af37; }
