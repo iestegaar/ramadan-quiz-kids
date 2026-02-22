@@ -98,18 +98,15 @@ body {
 
 #score-display { margin-top: 20px; font-weight: bold; color: #ffffff; }
 
-h.moon-box {
-font-size: 3.5rem !important;
+.moon-box {
 display: block !important;
 text-align: center !important;
-margin-bottom: -10px !important;
+font-size: 3.5rem !important;
+margin-bottom: 10px !important;
 line-height: 1 !important;
 }
 
 h1 {
-display: block !important;
 text-align: center !important;
-color: #ffffff !important;
-font-size: 1.8rem !important;
 margin-top: 0 !important;
 }
