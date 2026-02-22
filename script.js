@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreText = document.getElementById('score-display');
     const progressBar = document.getElementById('progress-bar');
     const correctSound = document.getElementById('correct-sound');
+    const wrongSound = document.getElementById('wrong-sound');
 
     function showQuestion() {
         resetState();
@@ -96,35 +97,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function selectAnswer(btn, isCorrect) {
-        if (isCorrect) {
-            btn.classList.add('correct');
-            
-            // Audio trigger
-            if (correctSound) {
-                correctSound.currentTime = 0;
-                correctSound.play().catch(e => console.log("Audio play error"));
-            }
+function selectAnswer(btn, isCorrect) {
+    if (isCorrect) {
+        btn.classList.add('correct');
+        
+        // Audio trigger
+        if (correctSound) {
+            correctSound.currentTime = 0;
+            correctSound.play().catch(e => console.log("Audio play error"));
+        }
 
-            if (firstTry) {
-                score++;
-                scoreText.innerText = `Score: ${score}`;
-            }
+        if (firstTry) {
+            score++;
+            scoreText.innerText = `Score: ${score}`;
+        }
 
-            setTimeout(() => {
-                currentIdx++;
-                if (currentIdx < questions.length) {
-                    showQuestion();
-                } else {
-                    showResult();
-                }
-            }, 1000);
-        } else {
-            btn.classList.add('wrong');
-            btn.disabled = true;
-            firstTry = false;
+        setTimeout(() => {
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }, 1000);
+    } else {
+        btn.classList.add('wrong');
+        btn.disabled = true;
+        firstTry = false;
+        if (wrongSound) {
+            wrongSound.currentTime = 0;
+            wrongSound.play().catch(e => console.log("Audio buzzer error"));
         }
     }
+}
 
     function showResult() {
         resetState();
