@@ -47,6 +47,7 @@ body {
     width: 90%;
     max-width: 500px;
     border: 3px solid #d4af37;
+    color: #ffffff; /* Wit */
 }
 
 .progress-container {
@@ -56,6 +57,10 @@ body {
     margin-bottom: 20px;
     height: 12px;
     overflow: hidden;
+}
+#question-text {
+    color: #ffffff !important; /* Dwingt de tekst naar wit */
+    margin-bottom: 20px;
 }
 
 .progress-bar {
@@ -91,4 +96,20 @@ body {
     75% { transform: translateX(8px); }
 }
 
-#score-display { margin-top: 20px; font-weight: bold; color: #d4af37; }
+#score-display { margin-top: 20px; font-weight: bold; color: #ffffff; }
+
+h.moon-box {
+font-size: 3.5rem !important;
+display: block !important;
+text-align: center !important;
+margin-bottom: -10px !important;
+line-height: 1 !important;
+}
+
+h1 {
+display: block !important;
+text-align: center !important;
+color: #ffffff !important;
+font-size: 1.8rem !important;
+margin-top: 0 !important;
+}
