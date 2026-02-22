@@ -15,14 +15,22 @@
 </div>
 
 <div class="quiz-container">
-<div id="progress-bar-container">
-<div id="progress-bar"></div>
-</div>
-<div class="moon-box">🌙</div>
-<h1>Ramadan Kennis Quiz</h1>
-<div id="question-text">Vraag wordt geladen...</div>
-<div id="answer-buttons" class="btn-grid"></div>
-<div id="score-display">Score: 0</div>
+  <div class="moon-box">🌙</div>
+  <h1>Ramadan Kennis Quiz</h1>
+
+  <div id="progress-bar-container">
+    <div id="progress-bar"></div>
+  </div>
+
+  <div id="question-text">Vraag wordt geladen...</div>
+  <div id="answer-buttons" class="btn-grid"></div>
+  <div id="score-display">Score: 0</div>
+
+  <div id="result-container" class="hide">
+    <h2>Quiz Voltooid!</h2>
+    <p id="final-score"></p>
+    <button id="restart-btn" onclick="restartQuiz()">Opnieuw Spelen</button>
+  </div>
 </div>
 
 <audio id="correct-sound" src="sounds/correct.mp3" preload="auto"></audio>

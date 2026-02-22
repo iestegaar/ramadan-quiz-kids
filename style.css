@@ -109,3 +109,35 @@ margin-top: 5px !important;
 
 #score-display { margin-top: 20px; font-weight: bold; color: #ffffff; }
 
+.hide {
+  display: none !important;
+}
+
+#result-container {
+  text-align: center;
+  padding: 20px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+#restart-btn {
+  background-color: #d4af37;
+  color: #001f3f;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 20px;
+  transition: transform 0.2s;
+}
+
+#restart-btn:hover {
+  transform: scale(1.05);
+  background-color: #f1c40f;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}   

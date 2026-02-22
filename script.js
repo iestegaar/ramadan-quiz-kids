@@ -59,6 +59,9 @@ const questions = [
     
 ];
 
+const resultContainer = document.getElementById('result-container');
+const restartBtn = document.getElementById('restart-btn');
+
 let currentIdx = 0;
 let score = 0;
 let firstTry = true;
@@ -143,6 +146,41 @@ function selectAnswer(btn, isCorrect) {
         rb.onclick = () => location.reload();
         btnContainer.appendChild(rb);
     }
+
+    function showScore() {
+  // Verberg de quiz onderdelen
+  document.getElementById('question-text').classList.add('hide');
+  document.getElementById('answer-buttons').classList.add('hide');
+  document.getElementById('score-display').classList.add('hide');
+  
+  // Toon het resultaat
+  resultContainer.classList.remove('hide');
+  const finalScoreText = document.getElementById('final-score');
+  finalScoreText.innerText = `Mash'Allah! Je hebt ${score} van de ${questions.length} vragen goed beantwoord.`;
+}
+
+function restartQuiz() {
+  // Reset alles naar het begin
+  currentQuestionIndex = 0;
+  score = 0;
+  resultContainer.classList.add('hide');
+  document.getElementById('question-text').classList.remove('hide');
+  document.getElementById('answer-buttons').classList.remove('hide');
+  document.getElementById('score-display').classList.remove('hide');
+  function setNextQuestion() {
+  resetState();
+  
+  // Controleer of we aan het einde van de vragenlijst zijn
+  if (currentQuestionIndex < questions.length) {
+    showQuestion(questions[currentQuestionIndex]);
+    updateProgressBar();
+  } else {
+    // Als er geen vragen meer zijn, toon dan het eindscherm!
+    showScore();
+  }
+}
+}
+    
 
     showQuestion();
 });
